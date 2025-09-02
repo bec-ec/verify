@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certification Verification | BEC Electronics Club</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="logo.png" alt="BEC Electronics Club Logo">
+      <h1>BEC Electronics Club</h1>
+      <p class="tagline">Innovating Beyond Circuits</p>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="verify.html" class="active">Verify Membership</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Verification Portal -->
+  <main class="verify-container">
+    <h2>Certification Verification Portal</h2>
+    <p>Please input your Reference ID</p>
+    <input type="text" id="refInput" placeholder="e.g., BEC-EC-XXXX">
+    <button onclick="verifyID()">Verify</button>
+    <div id="result"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 BEC Electronics Club | All Rights Reserved</p>
+  </footer>
+
+  <script>
+  async function verifyId() {
+  const refId = document.getElementById("refInput").value.trim();
+  const resultBox = document.getElementById("result");
+
+  if (!refId) {
+    resultBox.innerHTML = "<p style='color:red;'>Please enter a Reference ID.</p>";
+    return;
+  }
+
+  try {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbyTHs3CxaVlYrq7yWp1Kul5y6skDSoEMS2kLaNOI-qXhXLCQAotx8gMvLjvnMwpv25kNQ/exec?refId=" + refId);
+    const data = await response.json();
+
+    if (data.found) {
+      resultBox.innerHTML = `
+        <p><strong>Reference ID:</strong> ${data.referenceId}</p>
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Position:</strong> ${data.position}</p>
+        <p><strong>Tenure:</strong> ${data.tenure}</p>
+      `;
+    } else {
+      resultBox.innerHTML = "<p style='color:red;'>No member found with this Reference ID.</p>";
+    }
+  } catch (error) {
+    resultBox.innerHTML = "<p style='color:red;'>Error fetching data. Please try again</p>";
+  }
+}
+</script>
+</body>
+</html>
